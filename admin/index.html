@@ -5,35 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog Layout</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="admin/index.js"></script>
+
 </head>
-<script>
-    function handleLoad() {
-        const logo = localStorage.getItem("logo");
-        if (logo) {
-            document.getElementById("logo").innerHTML = logo;
-        }
-    
-        const companyName = localStorage.getItem("companyName");
-        const companyDesc = localStorage.getItem("companyDesc");
-        const companyCopyright = localStorage.getItem("companyCopyright");
-    
-        if (companyName) {
-            document.getElementById("companyName").innerHTML = companyName;
-        }
-        if (companyDesc) {
-            document.getElementById("companyDesc").innerHTML = companyDesc;
-        }
-        if (companyCopyright) {
-            document.getElementById("companyCopyright").innerHTML = companyCopyright;
-        }
-    }
-    
-    addEventListener("load", handleLoad);
-    </script>
-    
 <body>
     <header>
-        <div class="logo" id="logo">LOGO</div>
+        <div class="logo" id="logo"></div>
+        <input id="logoInput" hidden>
+        <button id="logoButton" onclick="handleHeadingEdit()">Edit</button>
         <nav>
             <a href="#">Home</a>
             <a href="#">About</a>
@@ -64,22 +43,25 @@
             <input id="companyNameInput" hidden>
             <textarea id="companyDescInput" hidden></textarea>
             <textarea id="companyCopyrightInput" hidden></textarea>
-
+    
             <h3 id="companyName">Your company's name</h3>
             <p id="companyDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             <p id="companyCopyright">© 2024, Company’s name. All rights reserved.</p>
+    
+            <button onclick="handleFooterNote()">Edit</button>
         </div>
-
+    
         <div class="links">
             <a href="#">Home</a>
             <a href="#">About</a>
             <a href="#">Blog</a>
         </div>
-        <div class="links2">
-            <a href="#">Facebook</a>
-            <a href="#">LinkedIn</a>
-            <a href="#">GitHub</a>
+        <div class="links2" id="link-list">
+            <input id="linkRef" placeholder="URL" hidden>
+            <input id="linkName" placeholder="Name" hidden>
+            <button onclick="handleAddLink(event)">+</button>
         </div>
+
     </footer>
     
 </body>
