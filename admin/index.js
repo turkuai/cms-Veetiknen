@@ -53,6 +53,10 @@ function handleFooterNote() {
     document.querySelector(".company-info button").innerHTML = editFooterMode ? "Save" : "Edit";
 }
 
+const savedLinks = localStorage.getItem("links-list")
+
+const linksList = savedLinks ? JSON.parse(savedLinks) : []
+
 function handleLoad() {
     const logo = localStorage.getItem("logo");
     if (logo) {
@@ -76,6 +80,16 @@ function handleLoad() {
         document.getElementById("companyCopyright").innerHTML = companyCopyright;
         document.getElementById("companyCopyrightInput").value = companyCopyright;
     }
+
+    const listElement = document.getElementById("link-list")
+
+    linksList.forEach(linkJson => {
+        const aElement = document.createElement("a")
+        aElement.innerHTML = linkJson.name 
+        aElement.href = linkJson.href 
+
+        listElement.appendChild(aElement)
+    });
 }
 
 addEventListener("load", handleLoad);
@@ -97,7 +111,6 @@ function handleAddLink(e) {
     } else {
         button.innerHTML = "+"
 
-        // Here we save
         const listElement = document.getElementById("link-list")
 
         const aElement = document.createElement("a")
@@ -106,8 +119,13 @@ function handleAddLink(e) {
 
         listElement.appendChild(aElement)
 
+        const linkJson = {
+            href: refInput.value,
+            name: nameInput.value,
+        }
+        linksList.push(linkJson)
+
+        localStorage.setItem("links-list", JSON.stringify(linksList))
     }
-
-
 
 }

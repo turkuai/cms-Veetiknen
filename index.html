@@ -10,27 +10,39 @@
     function handleLoad() {
         const logo = localStorage.getItem("logo");
         if (logo) {
-            document.getElementById("logo").innerHTML = logo;
+            document.getElementById("logo").innerHTML = logo; 
         }
-    
+
         const companyName = localStorage.getItem("companyName");
         const companyDesc = localStorage.getItem("companyDesc");
         const companyCopyright = localStorage.getItem("companyCopyright");
-    
+
         if (companyName) {
-            document.getElementById("companyName").innerHTML = companyName;
+            document.getElementById("companyName").innerText = companyName;
         }
         if (companyDesc) {
-            document.getElementById("companyDesc").innerHTML = companyDesc;
+            document.getElementById("companyDesc").innerText = companyDesc;
         }
         if (companyCopyright) {
-            document.getElementById("companyCopyright").innerHTML = companyCopyright;
+            document.getElementById("companyCopyright").innerText = companyCopyright;
         }
+
+        const savedLinks = localStorage.getItem("links-list");
+        const linksList = savedLinks ? JSON.parse(savedLinks) : [];
+
+        const listElement = document.querySelector(".links2");
+
+        linksList.forEach(linkJson => {
+            const aElement = document.createElement("a");
+            aElement.innerText = linkJson.name;
+            aElement.href = linkJson.href;
+            listElement.appendChild(aElement);
+        });
     }
-    
+
     addEventListener("load", handleLoad);
-    </script>
-    
+</script>
+
 <body>
     <header>
         <div class="logo" id="logo">LOGO</div>
@@ -76,9 +88,7 @@
             <a href="#">Blog</a>
         </div>
         <div class="links2">
-            <a href="#">Facebook</a>
-            <a href="#">LinkedIn</a>
-            <a href="#">GitHub</a>
+            <!--Tähän tulee linkit jotka lisätään admin sivulla-->
         </div>
     </footer>
     
