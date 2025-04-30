@@ -88,3 +88,15 @@ footer {
     margin-bottom: 25px;
     padding-right: 500px;
 }
+
+.link-container {
+    display: flex;        
+    align-items: center; 
+    margin-bottom: 10px;  
+}
+
+
+.link-container a {
+    margin-right: 10px;  
+}
+

@@ -95,37 +95,61 @@ function handleLoad() {
 addEventListener("load", handleLoad);
 
 function handleAddLink(e) {
+    const button = e.target;
+    const editMode = button.innerHTML === "+";
+    const inputHidden = !editMode;
 
-    const button = e.target
-    const editMode = button.innerHTML == "+"
-    const inputHidden = !editMode
+    const refInput = document.getElementById("linkRef");
+    const nameInput = document.getElementById("linkName");
 
-    const refInput = document.getElementById("linkRef")
-    const nameInput = document.getElementById("linkName")
-    
-    refInput.hidden = inputHidden
-    nameInput.hidden = inputHidden
+    refInput.hidden = inputHidden;
+    nameInput.hidden = inputHidden;
 
     if (editMode) {
-        button.innerHTML = "Save"
+        button.innerHTML = "Save";
     } else {
-        button.innerHTML = "+"
+        button.innerHTML = "+";
 
-        const listElement = document.getElementById("link-list")
+        const listElement = document.getElementById("link-list");
 
-        const aElement = document.createElement("a")
-        aElement.innerHTML = nameInput.value 
-        aElement.href = refInput.value 
+        const aElement = document.createElement("a");
+        aElement.innerHTML = nameInput.value;
+        aElement.href = refInput.value;
 
-        listElement.appendChild(aElement)
+        const deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "-";
+        deleteButton.classList.add("delete-btn");
+        deleteButton.onclick = function() {
+            handleDeleteLink(aElement, refInput.value, nameInput.value);
+        };
+
+        const linkContainer = document.createElement("div");
+        linkContainer.classList.add("link-container"); 
+
+        linkContainer.appendChild(aElement);
+        linkContainer.appendChild(deleteButton);
+
+        listElement.appendChild(linkContainer);
 
         const linkJson = {
             href: refInput.value,
             name: nameInput.value,
-        }
-        linksList.push(linkJson)
+        };
+        linksList.push(linkJson);
 
-        localStorage.setItem("links-list", JSON.stringify(linksList))
+        localStorage.setItem("links-list", JSON.stringify(linksList));
     }
-
 }
+
+
+function handleDeleteLink(aElement, linkHref, linkName) {
+    aElement.parentNode.remove();
+
+    const index = linksList.findIndex(link => link.href === linkHref && link.name === linkName);
+
+    if (index !== -1) {
+        linksList.splice(index, 1);
+        localStorage.setItem("links-list", JSON.stringify(linksList));
+    }
+}
+
