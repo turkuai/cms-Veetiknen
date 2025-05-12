@@ -8,15 +8,15 @@
 </head>
 <script>
     function handleLoad() {
-    const logo = localStorage.getItem("logo");
-    if (logo) {
-        const logoElement = document.getElementById("logo");
-        if (logo.startsWith("data:image")) {
-            logoElement.innerHTML = `<img src="${logo}" style="max-height: 100px;">`;
-        } else {
-            logoElement.textContent = logo;
+        const logo = localStorage.getItem("logo");
+        if (logo) {
+            const logoElement = document.getElementById("logo");
+            if (logo.startsWith("data:image")) {
+                logoElement.innerHTML = `<img src="${logo}" style="max-height: 100px;">`;
+            } else {
+                logoElement.textContent = logo;
+            }
         }
-    }
 
         const companyName = localStorage.getItem("companyName");
         const companyDesc = localStorage.getItem("companyDesc");
@@ -43,46 +43,28 @@
             listElement.appendChild(aElement);
         });
 
-        const savedTitle = localStorage.getItem("Title");
-        if (savedTitle) {
-            const articleTitle = document.getElementById("ArticleTitle");
-            if (articleTitle) {
-                articleTitle.textContent = savedTitle;
+        const savedArticles = localStorage.getItem("articles");
+        if (savedArticles) {
+            const articles = JSON.parse(savedArticles);
+            const articleContainer = document.getElementById("articles");
+            
+            if (articles.length > 0) {
+                articleContainer.innerHTML = '';
             }
-        }
+            
+            articles.forEach((article) => {
+                const articleElement = document.createElement("article");
 
-        const savedTitle2 = localStorage.getItem("Title2");
-        if (savedTitle2) {
-            const articleTitle2 = document.getElementById("ArticleTitle2");
-            if (articleTitle2) {
-                articleTitle2.textContent = savedTitle2;
-            }
-        }
+                articleElement.innerHTML = `
+                    <h2>${article.title}</h2>
+                    <div class="content">
+                        <p>${article.content}</p>
+                        ${article.image ? `<img src="${article.image}" style="max-width:100%;">` : ""}
+                    </div>
+                `;
 
-        const savedContent = localStorage.getItem("Content");
-        if (savedContent) {
-            const articleContent1 = document.getElementById("ArticleContent1");
-            if (articleContent1) {
-                articleContent1.textContent = savedContent;
-            }
-        }
-        const savedContent2 = localStorage.getItem("Content2");
-        if (savedContent2) {
-            const ArticleContent2= document.getElementById("ArticleContent2");
-            if (ArticleContent2) {
-                ArticleContent2.textContent = savedContent2;
-            }
-        }
-        const image1 = localStorage.getItem("articleImage1");
-        if (image1) {
-            const container1 = document.getElementById("imageContainer1");
-            container1.innerHTML = `<img src="${image1}" style="width: 100%; height: auto;"/>`;
-        }
-
-        const image2 = localStorage.getItem("articleImage2");
-        if (image2) {
-            const container2 = document.getElementById("imageContainer2");
-            container2.innerHTML = `<img src="${image2}" style="width: 100%; height: auto;"/>`;
+                articleContainer.appendChild(articleElement);
+            });
         }
     }
 
@@ -96,45 +78,35 @@
             <a href="#">Home</a>
             <a href="#">About</a>
             <a href="#">Blog</a>
+            <a href="admin/index.html">Admin</a>
         </nav>
     </header>
 
-    <main>
+    <main id="articles">
         <article>
-            <h2 id= "ArticleTitle">A title for your first article</h2>
+            <h2>Welcome to our Blog</h2>
             <div class="content">
-                <p id="ArticleContent1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
-                <div class="image-placeholder" id="imageContainer1"></div>
-            </div>
-        </article>
-
-        <article>
-            <h2 id ="ArticleTitle2">A title for your Second article</h2>
-            <div class="content">
-                <p id="ArticleContent2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
-                <div class="image-placeholder" id="imageContainer2"></div>
+                <p>This is a sample article. Log in to the admin panel to add, edit or delete articles.</p>
+                <p>You can access the admin panel by clicking the Admin link in the navigation bar.</p>
             </div>
         </article>
     </main>
 
     <footer>
         <div class="company-info">
-            <input id="companyNameInput" hidden>
-            <textarea id="companyDescInput" hidden></textarea>
-            <textarea id="companyCopyrightInput" hidden></textarea>
-
             <h3 id="companyName">Your company's name</h3>
             <p id="companyDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            <p id="companyCopyright">© 2024, Company’s name. All rights reserved.</p>
+            <p id="companyCopyright">© 2024, Company's name. All rights reserved.</p>
         </div>
 
         <div class="links">
             <a href="#">Home</a>
             <a href="#">About</a>
             <a href="#">Blog</a>
+            <a href="admin/index.html">Admin</a>
         </div>
         <div class="links2">
-            <!--Tähän tulee linkit jotka lisätään admin sivulla-->
+            <!-- Custom links will be added here by JavaScript -->
         </div>
     </footer>
     

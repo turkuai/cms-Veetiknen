@@ -1,19 +1,21 @@
 let editHeadingMode = false;
 let editFooterMode = false;
-let editArticleTitleMode = false;
-let editArticleTitleMode2 = false;
-let editArticleContentMode = false;
-let editArticleContentMode2 = false;
+let editingArticle = null;
 
+function getArticles() {
+    const savedArticles = localStorage.getItem("articles");
+    return savedArticles ? JSON.parse(savedArticles) : [];
+}
+
+function saveArticles(articles) {
+    localStorage.setItem("articles", JSON.stringify(articles));
+}
 
 function handleLogoEdit() {
-    console.log("handleLogoEdit", editHeadingMode);
     editHeadingMode = !editHeadingMode;
-    console.log("after change", editHeadingMode);
 
-    const logoElement = document.getElementById("logo");
-    const logoImageElement = document.getElementById("logoImage");
     const logoTextElement = document.getElementById("logoText");
+    const logoImageElement = document.getElementById("logoImage");
     const logoInput = document.getElementById("logoInput");
 
     if (!editHeadingMode) {
@@ -45,112 +47,193 @@ function handleLogoImageUpload() {
     }
 }
 
-function handleTitleEdit() {
-    console.log("handleTitleEdit", editArticleTitleMode);
-
-    editArticleTitleMode = !editArticleTitleMode;
-    console.log("after change", editArticleTitleMode);
-
-    const TitleElement = document.getElementById("ArticleTitle");
-    const inputTitle = document.getElementById("TitleInput");
-
-    if (editArticleTitleMode) {
-        inputTitle.value = TitleElement.textContent;
-    } else {
-        const Title = inputTitle.value;
-        TitleElement.textContent = Title;
-        localStorage.setItem("Title", Title);
-    }
-
-    TitleElement.hidden = editArticleTitleMode;
-    inputTitle.hidden = !editArticleTitleMode;
-    document.getElementById("TitleButton").innerHTML = editArticleTitleMode ? "Save" : "Edit";
+function addNewArticle() {
+    const articles = getArticles();
+    const newArticle = {
+        id: Date.now(),
+        title: "New Article Title",
+        content: "Write your content here...",
+        image: null
+    };
+    
+    articles.push(newArticle);
+    saveArticles(articles);
+    renderArticles(); 
 }
 
-function handleTitleEdit2 () {
-    console.log("handleTitleEdit", editArticleTitleMode2);
-
-    editArticleTitleMode2 = !editArticleTitleMode2;
-    console.log("after change", editArticleTitleMode2);
-
-    const TitleElement2 = document.getElementById("ArticleTitle2");
-    const inputTitle2 = document.getElementById("TitleInput2");
-
-    if (editArticleTitleMode2) {
-        inputTitle2.value = TitleElement2.textContent;
-    } else {
-        const Title2 = inputTitle2.value;
-        TitleElement2.textContent = Title2;
-        localStorage.setItem("Title2", Title2);
-    }
-
-    TitleElement2.hidden = editArticleTitleMode2;
-    inputTitle2.hidden = !editArticleTitleMode2;
-    document.getElementById("TitleButton2").innerHTML = editArticleTitleMode2 ? "Save" : "Edit";
+function renderArticle(article, index) {
+    const container = document.createElement("article");
+    container.id = `article-${article.id}`;
+    container.className = "admin-article";
+    
+    container.innerHTML = `
+        <div class="article-header">
+            <h2>${article.title}</h2>
+            <div class="article-actions">
+                <button onclick="editArticle(${article.id})">Edit</button>
+                <button onclick="deleteArticle(${article.id})">Delete</button>
+            </div>
+        </div>
+        <div class="content">
+            <p>${article.content}</p>
+            ${article.image ? 
+                `<div class="image-container">
+                    <img src="${article.image}" style="max-width: 100%; height: auto;">
+                </div>` : 
+                '<div class="image-placeholder">No image</div>'
+            }
+        </div>
+    `;
+    
+    return container;
 }
 
-function handleContentEdit() {
-    console.log("handleContentEdit", editArticleContentMode);
-
-    editArticleContentMode = !editArticleContentMode;
-    console.log("after change", editArticleContentMode);
-
-    const ContentElement = document.getElementById("ArticleContent1")
-    const inputContent = document.getElementById("ContentInput1")
-
-    if (editArticleContentMode) {
-        inputContent.value = ContentElement.textContent;
-    } else {
-        const Content = inputContent.value;
-        ContentElement.textContent = Content;
-        localStorage.setItem("Content", Content)
+function editArticle(articleId) {
+    const articles = getArticles();
+    const article = articles.find(a => a.id === articleId);
+    if (!article) return;
+    
+    const container = document.getElementById(`article-${articleId}`);
+    if (!container) return;
+    
+    editingArticle = articleId;
+    
+    container.innerHTML = `
+        <div class="article-edit-form">
+            <div class="form-group">
+                <label for="edit-title-${articleId}">Title:</label>
+                <input type="text" id="edit-title-${articleId}" value="${article.title}">
+            </div>
+            <div class="form-group">
+                <label for="edit-content-${articleId}">Content:</label>
+                <textarea id="edit-content-${articleId}" rows="5">${article.content}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="edit-image-${articleId}">Image:</label>
+                <input type="file" id="edit-image-${articleId}" accept="image/*">
+                ${article.image ? 
+                    `<div class="current-image">
+                        <img src="${article.image}" style="max-width: 200px; max-height: 150px;">
+                        <button type="button" onclick="removeArticleImage(${articleId})">Remove Image</button>
+                    </div>` : ''
+                }
+            </div>
+            <div class="form-actions">
+                <button type="button" onclick="saveArticleChanges(${articleId})">Save</button>
+                <button type="button" onclick="cancelArticleEdit(${articleId})">Cancel</button>
+            </div>
+        </div>
+    `;
+    
+    const imageInput = document.getElementById(`edit-image-${articleId}`);
+    if (imageInput) {
+        imageInput.addEventListener('change', function(event) {
+            handleArticleImageUpload(event, articleId);
+        });
     }
-    ContentElement.hidden = editArticleContentMode;
-    inputContent.hidden = !editArticleContentMode;
-    document.getElementById("ContentButton1").innerHTML = editArticleContentMode ? "Save" : "Edit";
 }
 
-function handleContentEdit2() {
-    console.log("handleContentEdit2", editArticleContentMode2);
-
-    editArticleContentMode2 = !editArticleContentMode2;
-    console.log("after change", editArticleContentMode2);
-
-    const contentElement = document.getElementById("ArticleContent2");
-    const inputElement = document.getElementById("ContentInput2");
-
-    if (editArticleContentMode2) {
-        inputElement.value = contentElement.textContent;
-    } else {
-        const newContent = inputElement.value;
-        contentElement.textContent = newContent;
-        localStorage.setItem("Content2", newContent);
-    }
-
-    contentElement.hidden = editArticleContentMode2;
-    inputElement.hidden = !editArticleContentMode2;
-
-    document.getElementById("ContentButton2").innerHTML = editArticleContentMode2 ? "Save" : "Edit";
+function handleArticleImageUpload(event, articleId) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const articles = getArticles();
+        const articleIndex = articles.findIndex(a => a.id === articleId);
+        if (articleIndex !== -1) {
+            const currentImage = document.querySelector(`#article-${articleId} .current-image`);
+            if (currentImage) {
+                currentImage.innerHTML = `
+                    <img src="${e.target.result}" style="max-width: 200px; max-height: 150px;">
+                    <button type="button" onclick="removeArticleImage(${articleId})">Remove Image</button>
+                `;
+            } else {
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'current-image';
+                imageContainer.innerHTML = `
+                    <img src="${e.target.result}" style="max-width: 200px; max-height: 150px;">
+                    <button type="button" onclick="removeArticleImage(${articleId})">Remove Image</button>
+                `;
+                document.getElementById(`edit-image-${articleId}`).parentNode.appendChild(imageContainer);
+            }d
+        }
+    };
+    reader.readAsDataURL(file);
 }
 
-function handleImageUpload(index) {
-    const input = document.getElementById(`imageInput${index}`);
-    const container = document.getElementById(`imageContainer${index}`);
+function removeArticleImage(articleId) {
+    const currentImage = document.querySelector(`#article-${articleId} .current-image`);
+    if (currentImage) {
+        currentImage.remove();
+    }
+}
 
-    if (input.files && input.files[0]) {
+function saveArticleChanges(articleId) {
+    const titleInput = document.getElementById(`edit-title-${articleId}`);
+    const contentInput = document.getElementById(`edit-content-${articleId}`);
+    const imageInput = document.getElementById(`edit-image-${articleId}`);
+    
+    if (!titleInput || !contentInput) return;
+    
+    const articles = getArticles();
+    const articleIndex = articles.findIndex(a => a.id === articleId);
+    
+    if (articleIndex === -1) return;
+    
+    articles[articleIndex].title = titleInput.value;
+    articles[articleIndex].content = contentInput.value;
+    
+    if (imageInput.files && imageInput.files[0]) {
         const reader = new FileReader();
-        reader.onload = function (e) {
-            container.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;" />`;
-            localStorage.setItem(`articleImage${index}`, e.target.result);
+        reader.onload = function(e) {
+            articles[articleIndex].image = e.target.result;
+            saveArticles(articles);
+            renderArticles();
         };
-        reader.readAsDataURL(input.files[0]);
+        reader.readAsDataURL(imageInput.files[0]);
+    } else {
+        const currentImage = document.querySelector(`#article-${articleId} .current-image`);
+        if (!currentImage && articles[articleIndex].image) {
+            articles[articleIndex].image = null;
+        }
+        saveArticles(articles);
+        renderArticles();
+    }
+    
+    editingArticle = null;
+}
+
+function cancelArticleEdit(articleId) {
+    editingArticle = null;
+    renderArticles();
+}
+
+function deleteArticle(articleId) {
+    if (confirm("Are you sure you want to delete this article?")) {
+        const articles = getArticles();
+        const updatedArticles = articles.filter(article => article.id !== articleId);
+        saveArticles(updatedArticles);
+        renderArticles();
     }
 }
 
-function handleImageDelete(index) {
-    const container = document.getElementById(`imageContainer${index}`);
-    container.innerHTML = "";
-    localStorage.removeItem(`articleImage${index}`);
+function renderArticles() {
+    const articles = getArticles();
+    const container = document.getElementById('adminArticles');
+    
+    container.innerHTML = '';
+    
+    if (articles.length === 0) {
+        const emptyMessage = document.createElement('div');
+        emptyMessage.className = 'empty-articles';
+        emptyMessage.textContent = 'No articles yet. Click the button below to add your first article.';
+        container.appendChild(emptyMessage);
+    } else {
+        articles.forEach((article, index) => {
+            container.appendChild(renderArticle(article, index));
+        });
+    }
 }
 
 function handleFooterNote() {
@@ -164,10 +247,14 @@ function handleFooterNote() {
     const descInput = document.getElementById("companyDescInput");
     const copyrightInput = document.getElementById("companyCopyrightInput");
 
-    if (!editFooterMode) {
-        name.innerHTML = nameInput.value;
-        desc.innerHTML = descInput.value;
-        copyright.innerHTML = copyrightInput.value;
+    if (editFooterMode) {
+        nameInput.value = name.textContent;
+        descInput.value = desc.textContent;
+        copyrightInput.value = copyright.textContent;
+    } else {
+        name.textContent = nameInput.value;
+        desc.textContent = descInput.value;
+        copyright.textContent = copyrightInput.value;
 
         localStorage.setItem("companyName", nameInput.value);
         localStorage.setItem("companyDesc", descInput.value);
@@ -183,112 +270,6 @@ function handleFooterNote() {
     copyrightInput.hidden = !editFooterMode;
 
     document.querySelector(".company-info button").innerHTML = editFooterMode ? "Save" : "Edit";
-}
-
-const savedLinks = localStorage.getItem("links-list")
-
-const linksList = savedLinks ? JSON.parse(savedLinks) : []
-
-function handleLoad() {
-    const logo = localStorage.getItem("logo");
-    if (logo) {
-        const logoImageElement = document.getElementById("logoImage");
-        const logoTextElement = document.getElementById("logoText");
-        
-        if (logo.includes("data:image")) {
-            logoImageElement.src = logo;
-            logoImageElement.style.display = 'block';
-            logoTextElement.hidden = true;
-        } else {
-            logoTextElement.innerHTML = logo;
-            logoImageElement.style.display = 'none';
-        }
-    }
-
-    const companyName = localStorage.getItem("companyName");
-    const companyDesc = localStorage.getItem("companyDesc");
-    const companyCopyright = localStorage.getItem("companyCopyright");
-
-    if (companyName) {
-        document.getElementById("companyName").innerHTML = companyName;
-        document.getElementById("companyNameInput").value = companyName;
-    }
-    if (companyDesc) {
-        document.getElementById("companyDesc").innerHTML = companyDesc;
-        document.getElementById("companyDescInput").value = companyDesc;
-    }
-    if (companyCopyright) {
-        document.getElementById("companyCopyright").innerHTML = companyCopyright;
-        document.getElementById("companyCopyrightInput").value = companyCopyright;
-    }
-
-    const savedTitle = localStorage.getItem("Title");
-    if (savedTitle) {
-        document.getElementById("ArticleTitle").innerHTML = savedTitle;
-        document.getElementById("TitleInput").value = savedTitle;
-    }
-
-    const savedTitle2 = localStorage.getItem("Title2");
-    if (savedTitle) {
-        document.getElementById("ArticleTitle2").innerHTML = savedTitle2;
-        document.getElementById("TitleInput2").value = savedTitle2;
-    }
-
-    const savedContent = localStorage.getItem("Content");
-    if (savedContent) {
-        document.getElementById("ArticleContent1").innerHTML = savedContent;
-        document.getElementById("ContentInput1").value = savedContent
-    }
-
-    const savedContent2 = localStorage.getItem("Content2");
-    if (savedContent2) { 
-        document.getElementById("ArticleContent2").textContent = savedContent2;
-        document.getElementById("ContentInput2").value = savedContent2;
-    }
-
-// Article Pictures
-   for (let i = 1; i <= 2; i++) {
-        const savedImage = localStorage.getItem(`articleImage${i}`);
-        const container = document.getElementById(`imageContainer${i}`);
-        
-        if (savedImage) {
-            container.innerHTML = `<img src="${savedImage}" style="width: 100%; height: 100%; object-fit: cover;" />`;
-        }
-}
-
-    linksList.forEach(renderLink);
-}
-   
-addEventListener("load", handleLoad);
-
-function renderLink(linkJson) {
-    const listElement = document.getElementById("link-list");
-
-    const linkContainer = document.createElement("div");
-    linkContainer.classList.add("link-container");
-
-    const aElement = document.createElement("a");
-    aElement.innerHTML = linkJson.name;
-    aElement.href = linkJson.href;
-
-    const deleteButton = document.createElement("button");
-    deleteButton.innerHTML = "-";
-    deleteButton.classList.add("delete-btn");
-    deleteButton.onclick = () => {
-        handleDeleteLink(linkContainer, linkJson);
-    };
-
-    const editButton = document.createElement("button");
-    editButton.innerHTML = "Edit";
-    editButton.classList.add("edit-btn");
-    editButton.onclick = () => {
-        handleEditLink(linkContainer, linkJson);
-    };
-
-    linkContainer.appendChild(aElement);
-    linkContainer.appendChild(editButton);
-    linkContainer.appendChild(deleteButton);
-    listElement.appendChild(linkContainer);
 }
 
 function handleAddLink(e) {
@@ -309,22 +290,68 @@ function handleAddLink(e) {
             href: refInput.value,
             name: nameInput.value,
         };
+        
+        const linksList = getLinksList();
         linksList.push(linkJson);
-        localStorage.setItem("links-list", JSON.stringify(linksList));
+        saveLinksList(linksList);
+        
         renderLink(linkJson);
+        
+        refInput.value = "";
+        nameInput.value = "";
     }
 }
 
+function getLinksList() {
+    const savedLinks = localStorage.getItem("links-list");
+    return savedLinks ? JSON.parse(savedLinks) : [];
+}
+
+function saveLinksList(linksList) {
+    localStorage.setItem("links-list", JSON.stringify(linksList));
+}
+
+function renderLink(linkJson) {
+    const listElement = document.getElementById("link-list");
+
+    const linkContainer = document.createElement("div");
+    linkContainer.classList.add("link-container");
+
+    const aElement = document.createElement("a");
+    aElement.textContent = linkJson.name;
+    aElement.href = linkJson.href;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "-";
+    deleteButton.classList.add("delete-btn");
+    deleteButton.onclick = () => {
+        handleDeleteLink(linkContainer, linkJson);
+    };
+
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+    editButton.classList.add("edit-btn");
+    editButton.onclick = () => {
+        handleEditLink(linkContainer, linkJson);
+    };
+
+    linkContainer.appendChild(aElement);
+    linkContainer.appendChild(editButton);
+    linkContainer.appendChild(deleteButton);
+    listElement.appendChild(linkContainer);
+}
 
 function handleDeleteLink(container, linkJson) {
     container.remove();
 
+    const linksList = getLinksList();
     const index = linksList.findIndex(
         link => link.href === linkJson.href && link.name === linkJson.name
     );
+    
     if (index !== -1) {
         linksList.splice(index, 1);
-        localStorage.setItem("links-list", JSON.stringify(linksList));
+        saveLinksList(linksList);
     }
 }
 
@@ -337,19 +364,21 @@ function handleEditLink(container, linkJson) {
     hrefInput.value = linkJson.href;
 
     const saveButton = document.createElement("button");
-    saveButton.innerHTML = "Save";
+    saveButton.textContent = "Save";
     saveButton.onclick = () => {
         const updatedLink = {
             name: nameInput.value,
             href: hrefInput.value,
         };
 
+        const linksList = getLinksList();
         const index = linksList.findIndex(
             link => link.href === linkJson.href && link.name === linkJson.name
         );
+        
         if (index !== -1) {
             linksList[index] = updatedLink;
-            localStorage.setItem("links-list", JSON.stringify(linksList));
+            saveLinksList(linksList);
 
             container.innerHTML = "";
             renderLink(updatedLink);
@@ -360,3 +389,41 @@ function handleEditLink(container, linkJson) {
     container.appendChild(hrefInput);
     container.appendChild(saveButton);
 }
+
+function handleLoad() {
+    const logo = localStorage.getItem("logo");
+    if (logo) {
+        const logoImageElement = document.getElementById("logoImage");
+        const logoTextElement = document.getElementById("logoText");
+        
+        if (logo.includes("data:image")) {
+            logoImageElement.src = logo;
+            logoImageElement.style.display = 'block';
+            logoTextElement.hidden = true;
+        } else {
+            logoTextElement.textContent = logo;
+            logoImageElement.style.display = 'none';
+        }
+    }
+
+    const companyName = localStorage.getItem("companyName");
+    const companyDesc = localStorage.getItem("companyDesc");
+    const companyCopyright = localStorage.getItem("companyCopyright");
+
+    if (companyName) {
+        document.getElementById("companyName").textContent = companyName;
+    }
+    if (companyDesc) {
+        document.getElementById("companyDesc").textContent = companyDesc;
+    }
+    if (companyCopyright) {
+        document.getElementById("companyCopyright").textContent = companyCopyright;
+    }
+
+    const linksList = getLinksList();
+    linksList.forEach(renderLink);
+    
+    renderArticles();
+}
+
+window.addEventListener("load", handleLoad);

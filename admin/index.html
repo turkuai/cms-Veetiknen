@@ -3,83 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog Layout</title>
+    <title>Blog Admin Panel</title>
     <link rel="stylesheet" href="../styles.css">
-    <script src="index.js"></script>
 
 </head>
 <body>
     <header>
-    <div class="logo" id="logo">
-        <img src="" id="logoImage" style="max-width: 100%; max-height: 100px; display: none;">
-        <span id="logoText">LOGO</span>
-    </div>
-    <input type="file" id="logoInput" hidden onchange="handleLogoImageUpload()">
-    <button id="logoButton" onclick="handleLogoEdit()">Edit</button>
+        <div class="logo" id="logo">
+            <img src="" id="logoImage" style="max-width: 100%; max-height: 100px; display: none;">
+            <span id="logoText">LOGO</span>
+        </div>
+        <input type="file" id="logoInput" hidden onchange="handleLogoImageUpload()">
+        <button id="logoButton" onclick="handleLogoEdit()">Edit</button>
         <nav>
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Blog</a>
+            <a href="../index.html">View Site</a>
+            <a href="#">Admin Panel</a>
         </nav>
     </header>
 
-    <main>
-        <article>
-            <input id="TitleInput" hidden>
-            <button id="TitleButton" onclick="handleTitleEdit()">Edit</button>
-            <h2 id="ArticleTitle">A title for your first article</h2>
-            <input id="ContentInput1" hidden>
-            <button id="ContentButton1" onclick="handleContentEdit()">Edit</button>
-            <div class="content">
-                <p id="ArticleContent1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
-            <div class="image-placeholder" id="imageContainer1"></div>
-            <input type="file" id="imageInput1" accept="image/*">
-            <button onclick="handleImageUpload(1)">Upload Image</button>
-            <button onclick="handleImageDelete(1)">Remove Image</button>
-            </div>
-        </article>
+    <h1 style="text-align: center; margin: 20px 0;">Blog Admin Panel</h1>
 
-        <article>
-            <input id="TitleInput2" hidden>
-            <button id="TitleButton2" onclick="handleTitleEdit2()">Edit</button>
-            <h2 id="ArticleTitle2">A title for your Second article</h2>
-            <input id="ContentInput2" hidden>
-            <button id="ContentButton2" onclick="handleContentEdit2()">Edit</button>
-            <div class="content">
-                <p id="ArticleContent2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
-            <div class="image-placeholder" id="imageContainer2"></div>
-            <input type="file" id="imageInput2" accept="image/*">
-            <button onclick="handleImageUpload(2)">Upload Image</button>
-            <button onclick="handleImageDelete(2)">Remove Image</button>
-            </div>
-        </article>
+    <main id="adminArticles">
+        <!-- Articles will be rendered here by JavaScript -->
     </main>
+
+    <button class="add-article-button" onclick="addNewArticle()">+ Add New Article</button>
 
     <footer>
         <div class="company-info">
             <input id="companyNameInput" placeholder="Your company's name" hidden>
-            <textarea id="companyDescInput" placeholder="Text" hidden></textarea>
-            <textarea id="companyCopyrightInput" placeholder="Copyright" hidden></textarea>
+            <textarea id="companyDescInput" placeholder="Company description" hidden></textarea>
+            <textarea id="companyCopyrightInput" placeholder="Copyright text" hidden></textarea>
     
             <h3 id="companyName">Your company's name</h3>
             <p id="companyDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            <p id="companyCopyright">© 2024, Company’s name. All rights reserved.</p>
+            <p id="companyCopyright">© 2024, Company's name. All rights reserved.</p>
     
             <button onclick="handleFooterNote()">Edit</button>
         </div>
     
         <div class="links">
-            <a href="#">Home</a>
-            <a href="#">About</a>
-            <a href="#">Blog</a>
+            <a href="../index.html">View Site</a>
+            <a href="#">Admin Panel</a>
         </div>
         <div class="links2" id="link-list">
             <input id="linkRef" placeholder="URL" hidden>
             <input id="linkName" placeholder="Name" hidden>
             <button onclick="handleAddLink(event)">+</button>
         </div>
-
     </footer>
     
+    <script src="index.js"></script>
 </body>
 </html>
