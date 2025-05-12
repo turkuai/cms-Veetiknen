@@ -80,76 +80,107 @@ function handleLoad() {
         document.getElementById("companyCopyright").innerHTML = companyCopyright;
         document.getElementById("companyCopyrightInput").value = companyCopyright;
     }
-
-    const listElement = document.getElementById("link-list")
-
-    linksList.forEach(linkJson => {
-        const aElement = document.createElement("a")
-        aElement.innerHTML = linkJson.name 
-        aElement.href = linkJson.href 
-
-        listElement.appendChild(aElement)
-    });
+    linksList.forEach(renderLink);
 }
-
+   
 addEventListener("load", handleLoad);
+
+function renderLink(linkJson) {
+    const listElement = document.getElementById("link-list");
+
+    const linkContainer = document.createElement("div");
+    linkContainer.classList.add("link-container");
+
+    const aElement = document.createElement("a");
+    aElement.innerHTML = linkJson.name;
+    aElement.href = linkJson.href;
+
+    const deleteButton = document.createElement("button");
+    deleteButton.innerHTML = "-";
+    deleteButton.classList.add("delete-btn");
+    deleteButton.onclick = () => {
+        handleDeleteLink(linkContainer, linkJson);
+    };
+
+    const editButton = document.createElement("button");
+    editButton.innerHTML = "Edit";
+    editButton.classList.add("edit-btn");
+    editButton.onclick = () => {
+        handleEditLink(linkContainer, linkJson);
+    };
+
+    linkContainer.appendChild(aElement);
+    linkContainer.appendChild(editButton);
+    linkContainer.appendChild(deleteButton);
+    listElement.appendChild(linkContainer);
+}
 
 function handleAddLink(e) {
     const button = e.target;
-    const editMode = button.innerHTML === "+";
-    const inputHidden = !editMode;
-
+    const isEditing = button.innerHTML === "+";
     const refInput = document.getElementById("linkRef");
     const nameInput = document.getElementById("linkName");
 
-    refInput.hidden = inputHidden;
-    nameInput.hidden = inputHidden;
+    refInput.hidden = !isEditing;
+    nameInput.hidden = !isEditing;
 
-    if (editMode) {
+    if (isEditing) {
         button.innerHTML = "Save";
     } else {
         button.innerHTML = "+";
-
-        const listElement = document.getElementById("link-list");
-
-        const aElement = document.createElement("a");
-        aElement.innerHTML = nameInput.value;
-        aElement.href = refInput.value;
-
-        const deleteButton = document.createElement("button");
-        deleteButton.innerHTML = "-";
-        deleteButton.classList.add("delete-btn");
-        deleteButton.onclick = function() {
-            handleDeleteLink(aElement, refInput.value, nameInput.value);
-        };
-
-        const linkContainer = document.createElement("div");
-        linkContainer.classList.add("link-container"); 
-
-        linkContainer.appendChild(aElement);
-        linkContainer.appendChild(deleteButton);
-
-        listElement.appendChild(linkContainer);
 
         const linkJson = {
             href: refInput.value,
             name: nameInput.value,
         };
         linksList.push(linkJson);
-
         localStorage.setItem("links-list", JSON.stringify(linksList));
+        renderLink(linkJson);
     }
 }
 
 
-function handleDeleteLink(aElement, linkHref, linkName) {
-    aElement.parentNode.remove();
+function handleDeleteLink(container, linkJson) {
+    container.remove();
 
-    const index = linksList.findIndex(link => link.href === linkHref && link.name === linkName);
-
+    const index = linksList.findIndex(
+        link => link.href === linkJson.href && link.name === linkJson.name
+    );
     if (index !== -1) {
         linksList.splice(index, 1);
         localStorage.setItem("links-list", JSON.stringify(linksList));
     }
 }
 
+function handleEditLink(container, linkJson) {
+    container.innerHTML = "";
+
+    const nameInput = document.createElement("input");
+    const hrefInput = document.createElement("input");
+    nameInput.value = linkJson.name;
+    hrefInput.value = linkJson.href;
+
+    const saveButton = document.createElement("button");
+    saveButton.innerHTML = "Save";
+    saveButton.onclick = () => {
+        const updatedLink = {
+            name: nameInput.value,
+            href: hrefInput.value,
+        };
+
+        const index = linksList.findIndex(
+            link => link.href === linkJson.href && link.name === linkJson.name
+        );
+        if (index !== -1) {
+            linksList[index] = updatedLink;
+            localStorage.setItem("links-list", JSON.stringify(linksList));
+
+            container.innerHTML = "";
+            renderLink(updatedLink);
+        }
+    };
+
+    container.appendChild(nameInput);
+    container.appendChild(hrefInput);
+    container.appendChild(saveButton);
+}
