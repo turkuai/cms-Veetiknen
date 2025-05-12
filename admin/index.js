@@ -1,6 +1,7 @@
 let editHeadingMode = false;
 let editFooterMode = false;
 let editArticleTitleMode = false;
+let editArticleTitleMode2 = false;
 let editArticleContentMode = false;
 let editArticleContentMode2 = false;
 
@@ -47,7 +48,25 @@ function handleTitleEdit() {
 }
 
 function handleTitleEdit2 () {
+    console.log("handleTitleEdit", editArticleTitleMode2);
 
+    editArticleTitleMode2 = !editArticleTitleMode2;
+    console.log("after change", editArticleTitleMode2);
+
+    const TitleElement2 = document.getElementById("ArticleTitle2");
+    const inputTitle2 = document.getElementById("TitleInput2");
+
+    if (editArticleTitleMode2) {
+        inputTitle2.value = TitleElement2.textContent;
+    } else {
+        const Title2 = inputTitle2.value;
+        TitleElement2.textContent = Title2;
+        localStorage.setItem("Title2", Title2);
+    }
+
+    TitleElement2.hidden = editArticleTitleMode2;
+    inputTitle2.hidden = !editArticleTitleMode2;
+    document.getElementById("TitleButton2").innerHTML = editArticleTitleMode2 ? "Save" : "Edit";
 }
 
 function handleContentEdit() {
@@ -159,6 +178,13 @@ function handleLoad() {
         document.getElementById("ArticleTitle").innerHTML = savedTitle;
         document.getElementById("TitleInput").value = savedTitle;
     }
+
+    const savedTitle2 = localStorage.getItem("Title2");
+    if (savedTitle) {
+        document.getElementById("ArticleTitle2").innerHTML = savedTitle2;
+        document.getElementById("TitleInput2").value = savedTitle2;
+    }
+
     const savedContent = localStorage.getItem("Content");
     if (savedContent) {
         document.getElementById("ArticleContent1").innerHTML = savedContent;

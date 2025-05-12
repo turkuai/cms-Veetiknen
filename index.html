@@ -45,6 +45,15 @@
                 articleTitle.textContent = savedTitle;
             }
         }
+
+        const savedTitle2 = localStorage.getItem("Title2");
+        if (savedTitle) {
+            const articleTitle2 = document.getElementById("ArticleTitle2");
+            if (articleTitle2) {
+                articleTitle2.textContent = savedTitle2;
+            }
+        }
+
         const savedContent = localStorage.getItem("Content");
         if (savedContent) {
             const articleContent1 = document.getElementById("ArticleContent1");
@@ -84,7 +93,7 @@
         </article>
 
         <article>
-            <h2>A title for your first article</h2>
+            <h2 id ="ArticleTitle2">A title for your Second article</h2>
             <div class="content">
                 <p id="ArticleContent2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
                 <div class="image-placeholder"></div>
