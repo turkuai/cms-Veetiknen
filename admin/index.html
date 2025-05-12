@@ -10,9 +10,12 @@
 </head>
 <body>
     <header>
-        <div class="logo" id="logo">LOGO</div>
-        <input id="logoInput" hidden>
-        <button id="logoButton" onclick="handleHeadingEdit()">Edit</button>
+    <div class="logo" id="logo">
+        <img src="" id="logoImage" style="max-width: 100%; max-height: 100px; display: none;">
+        <span id="logoText">LOGO</span>
+    </div>
+    <input type="file" id="logoInput" hidden onchange="handleLogoImageUpload()">
+    <button id="logoButton" onclick="handleLogoEdit()">Edit</button>
         <nav>
             <a href="#">Home</a>
             <a href="#">About</a>

@@ -5,24 +5,44 @@ let editArticleTitleMode2 = false;
 let editArticleContentMode = false;
 let editArticleContentMode2 = false;
 
-function handleHeadingEdit() {
-    console.log("handleHeadingEdit", editHeadingMode);
 
+function handleLogoEdit() {
+    console.log("handleLogoEdit", editHeadingMode);
     editHeadingMode = !editHeadingMode;
     console.log("after change", editHeadingMode);
 
-    const headingElement = document.getElementById("logo");
-    const inputElement = document.getElementById("logoInput");
+    const logoElement = document.getElementById("logo");
+    const logoImageElement = document.getElementById("logoImage");
+    const logoTextElement = document.getElementById("logoText");
+    const logoInput = document.getElementById("logoInput");
 
     if (!editHeadingMode) {
-        const logo = inputElement.value;
-        headingElement.innerHTML = logo;
+        const logo = logoImageElement.src || logoTextElement.innerHTML;
         localStorage.setItem("logo", logo);
     }
 
-    headingElement.hidden = editHeadingMode;
-    inputElement.hidden = !editHeadingMode;
+    logoTextElement.hidden = editHeadingMode;
+    logoImageElement.hidden = editHeadingMode;
+    logoInput.hidden = !editHeadingMode;
+
     document.getElementById("logoButton").innerHTML = editHeadingMode ? "Save" : "Edit";
+}
+
+function handleLogoImageUpload() {
+    const inputElement = document.getElementById("logoInput");
+    const logoImageElement = document.getElementById("logoImage");
+    const logoTextElement = document.getElementById("logoText");
+
+    const file = inputElement.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            logoImageElement.src = event.target.result;
+            logoImageElement.style.display = 'block';
+            logoTextElement.hidden = true; 
+        };
+        reader.readAsDataURL(file);
+    }
 }
 
 function handleTitleEdit() {
@@ -120,7 +140,6 @@ function handleImageUpload(index) {
     if (input.files && input.files[0]) {
         const reader = new FileReader();
         reader.onload = function (e) {
-            // Remove placeholder and set the image
             container.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;" />`;
             localStorage.setItem(`articleImage${index}`, e.target.result);
         };
@@ -130,7 +149,7 @@ function handleImageUpload(index) {
 
 function handleImageDelete(index) {
     const container = document.getElementById(`imageContainer${index}`);
-    container.innerHTML = ""; // or put a placeholder image here
+    container.innerHTML = "";
     localStorage.removeItem(`articleImage${index}`);
 }
 
@@ -173,8 +192,17 @@ const linksList = savedLinks ? JSON.parse(savedLinks) : []
 function handleLoad() {
     const logo = localStorage.getItem("logo");
     if (logo) {
-        document.getElementById("logo").innerHTML = logo;
-        document.getElementById("logoInput").value = logo;
+        const logoImageElement = document.getElementById("logoImage");
+        const logoTextElement = document.getElementById("logoText");
+        
+        if (logo.includes("data:image")) {
+            logoImageElement.src = logo;
+            logoImageElement.style.display = 'block';
+            logoTextElement.hidden = true;
+        } else {
+            logoTextElement.innerHTML = logo;
+            logoImageElement.style.display = 'none';
+        }
     }
 
     const companyName = localStorage.getItem("companyName");
@@ -224,7 +252,6 @@ function handleLoad() {
         const container = document.getElementById(`imageContainer${i}`);
         
         if (savedImage) {
-            // Remove placeholder and set the image
             container.innerHTML = `<img src="${savedImage}" style="width: 100%; height: 100%; object-fit: cover;" />`;
         }
 }

@@ -8,10 +8,15 @@
 </head>
 <script>
     function handleLoad() {
-        const logo = localStorage.getItem("logo");
-        if (logo) {
-            document.getElementById("logo").innerHTML = logo; 
+    const logo = localStorage.getItem("logo");
+    if (logo) {
+        const logoElement = document.getElementById("logo");
+        if (logo.startsWith("data:image")) {
+            logoElement.innerHTML = `<img src="${logo}" style="max-height: 100px;">`;
+        } else {
+            logoElement.textContent = logo;
         }
+    }
 
         const companyName = localStorage.getItem("companyName");
         const companyDesc = localStorage.getItem("companyDesc");
