@@ -113,6 +113,27 @@ function handleContentEdit2() {
     document.getElementById("ContentButton2").innerHTML = editArticleContentMode2 ? "Save" : "Edit";
 }
 
+function handleImageUpload(index) {
+    const input = document.getElementById(`imageInput${index}`);
+    const container = document.getElementById(`imageContainer${index}`);
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            // Remove placeholder and set the image
+            container.innerHTML = `<img src="${e.target.result}" style="width: 100%; height: 100%; object-fit: cover;" />`;
+            localStorage.setItem(`articleImage${index}`, e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function handleImageDelete(index) {
+    const container = document.getElementById(`imageContainer${index}`);
+    container.innerHTML = ""; // or put a placeholder image here
+    localStorage.removeItem(`articleImage${index}`);
+}
+
 function handleFooterNote() {
     editFooterMode = !editFooterMode;
 
@@ -196,6 +217,17 @@ function handleLoad() {
         document.getElementById("ArticleContent2").textContent = savedContent2;
         document.getElementById("ContentInput2").value = savedContent2;
     }
+
+// Article Pictures
+   for (let i = 1; i <= 2; i++) {
+        const savedImage = localStorage.getItem(`articleImage${i}`);
+        const container = document.getElementById(`imageContainer${i}`);
+        
+        if (savedImage) {
+            // Remove placeholder and set the image
+            container.innerHTML = `<img src="${savedImage}" style="width: 100%; height: 100%; object-fit: cover;" />`;
+        }
+}
 
     linksList.forEach(renderLink);
 }

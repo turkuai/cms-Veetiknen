@@ -29,7 +29,10 @@
             <button id="ContentButton1" onclick="handleContentEdit()">Edit</button>
             <div class="content">
                 <p id="ArticleContent1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
-                <div class="image-placeholder"></div>
+            <div class="image-placeholder" id="imageContainer1"></div>
+            <input type="file" id="imageInput1" accept="image/*">
+            <button onclick="handleImageUpload(1)">Upload Image</button>
+            <button onclick="handleImageDelete(1)">Remove Image</button>
             </div>
         </article>
 
@@ -41,7 +44,10 @@
             <button id="ContentButton2" onclick="handleContentEdit2()">Edit</button>
             <div class="content">
                 <p id="ArticleContent2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
-                <div class="image-placeholder"></div>
+            <div class="image-placeholder" id="imageContainer2"></div>
+            <input type="file" id="imageInput2" accept="image/*">
+            <button onclick="handleImageUpload(2)">Upload Image</button>
+            <button onclick="handleImageDelete(2)">Remove Image</button>
             </div>
         </article>
     </main>

@@ -47,7 +47,7 @@
         }
 
         const savedTitle2 = localStorage.getItem("Title2");
-        if (savedTitle) {
+        if (savedTitle2) {
             const articleTitle2 = document.getElementById("ArticleTitle2");
             if (articleTitle2) {
                 articleTitle2.textContent = savedTitle2;
@@ -67,6 +67,17 @@
             if (ArticleContent2) {
                 ArticleContent2.textContent = savedContent2;
             }
+        }
+        const image1 = localStorage.getItem("articleImage1");
+        if (image1) {
+            const container1 = document.getElementById("imageContainer1");
+            container1.innerHTML = `<img src="${image1}" style="width: 100%; height: auto;"/>`;
+        }
+
+        const image2 = localStorage.getItem("articleImage2");
+        if (image2) {
+            const container2 = document.getElementById("imageContainer2");
+            container2.innerHTML = `<img src="${image2}" style="width: 100%; height: auto;"/>`;
         }
     }
 
@@ -88,7 +99,7 @@
             <h2 id= "ArticleTitle">A title for your first article</h2>
             <div class="content">
                 <p id="ArticleContent1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
-                <div class="image-placeholder"></div>
+                <div class="image-placeholder" id="imageContainer1"></div>
             </div>
         </article>
 
@@ -96,7 +107,7 @@
             <h2 id ="ArticleTitle2">A title for your Second article</h2>
             <div class="content">
                 <p id="ArticleContent2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
-                <div class="image-placeholder"></div>
+                <div class="image-placeholder" id="imageContainer2"></div>
             </div>
         </article>
     </main>
