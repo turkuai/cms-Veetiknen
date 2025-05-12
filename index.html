@@ -31,13 +31,34 @@
         const linksList = savedLinks ? JSON.parse(savedLinks) : [];
 
         const listElement = document.querySelector(".links2");
-
         linksList.forEach(linkJson => {
             const aElement = document.createElement("a");
             aElement.innerText = linkJson.name;
             aElement.href = linkJson.href;
             listElement.appendChild(aElement);
         });
+
+        const savedTitle = localStorage.getItem("Title");
+        if (savedTitle) {
+            const articleTitle = document.getElementById("ArticleTitle");
+            if (articleTitle) {
+                articleTitle.textContent = savedTitle;
+            }
+        }
+        const savedContent = localStorage.getItem("Content");
+        if (savedContent) {
+            const articleContent1 = document.getElementById("ArticleContent1");
+            if (articleContent1) {
+                articleContent1.textContent = savedContent;
+            }
+        }
+        const savedContent2 = localStorage.getItem("Content2");
+        if (savedContent2) {
+            const ArticleContent2= document.getElementById("ArticleContent2");
+            if (ArticleContent2) {
+                ArticleContent2.textContent = savedContent2;
+            }
+        }
     }
 
     addEventListener("load", handleLoad);
@@ -55,9 +76,9 @@
 
     <main>
         <article>
-            <h2>A title for your first article</h2>
+            <h2 id= "ArticleTitle">A title for your first article</h2>
             <div class="content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
+                <p id="ArticleContent1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
                 <div class="image-placeholder"></div>
             </div>
         </article>
@@ -65,7 +86,7 @@
         <article>
             <h2>A title for your first article</h2>
             <div class="content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
+                <p id="ArticleContent2">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum molestie in sapien eget lobortis. Pellentesque aliquet lacus suscipit felis finibus, id auctor purus bibendum. Mauris arcu nisi, suscipit at lacinia vitae, elementum sed purus. Nulla congue eget elit in condimentum. Vivamus turpis erat, scelerisque hendrerit nisi non, suscipit condimentum enim. Nam in condimentum felis. Suspendisse molestie non metus eu suscipit. Aliquam est est, finibus at dapibus at, luctus a arcu. Sed non lacinia odio. Aliquam turpis ante, luctus vitae felis ac, laoreet maximus velit. Etiam fringilla sollicitudin nulla, mattis mollis risus luctus ut. Integer at augue ut leo hendrerit venenatis.</p>
                 <div class="image-placeholder"></div>
             </div>
         </article>

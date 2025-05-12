@@ -1,5 +1,8 @@
 let editHeadingMode = false;
 let editFooterMode = false;
+let editArticleTitleMode = false;
+let editArticleContentMode = false;
+let editArticleContentMode2 = false;
 
 function handleHeadingEdit() {
     console.log("handleHeadingEdit", editHeadingMode);
@@ -19,6 +22,76 @@ function handleHeadingEdit() {
     headingElement.hidden = editHeadingMode;
     inputElement.hidden = !editHeadingMode;
     document.getElementById("logoButton").innerHTML = editHeadingMode ? "Save" : "Edit";
+}
+
+function handleTitleEdit() {
+    console.log("handleTitleEdit", editArticleTitleMode);
+
+    editArticleTitleMode = !editArticleTitleMode;
+    console.log("after change", editArticleTitleMode);
+
+    const TitleElement = document.getElementById("ArticleTitle");
+    const inputTitle = document.getElementById("TitleInput");
+
+    if (editArticleTitleMode) {
+        inputTitle.value = TitleElement.textContent;
+    } else {
+        const Title = inputTitle.value;
+        TitleElement.textContent = Title;
+        localStorage.setItem("Title", Title);
+    }
+
+    TitleElement.hidden = editArticleTitleMode;
+    inputTitle.hidden = !editArticleTitleMode;
+    document.getElementById("TitleButton").innerHTML = editArticleTitleMode ? "Save" : "Edit";
+}
+
+function handleTitleEdit2 () {
+
+}
+
+function handleContentEdit() {
+    console.log("handleContentEdit", editArticleContentMode);
+
+    editArticleContentMode = !editArticleContentMode;
+    console.log("after change", editArticleContentMode);
+
+    const ContentElement = document.getElementById("ArticleContent1")
+    const inputContent = document.getElementById("ContentInput1")
+
+    if (editArticleContentMode) {
+        inputContent.value = ContentElement.textContent;
+    } else {
+        const Content = inputContent.value;
+        ContentElement.textContent = Content;
+        localStorage.setItem("Content", Content)
+    }
+    ContentElement.hidden = editArticleContentMode;
+    inputContent.hidden = !editArticleContentMode;
+    document.getElementById("ContentButton1").innerHTML = editArticleContentMode ? "Save" : "Edit";
+}
+
+function handleContentEdit2() {
+    console.log("handleContentEdit2", editArticleContentMode2);
+
+    editArticleContentMode2 = !editArticleContentMode2;
+    console.log("after change", editArticleContentMode2);
+
+    const contentElement = document.getElementById("ArticleContent2");
+    const inputElement = document.getElementById("ContentInput2");
+
+    if (editArticleContentMode2) {
+        inputElement.value = contentElement.textContent;
+    } else {
+        const newContent = inputElement.value;
+        contentElement.textContent = newContent;
+        localStorage.setItem("Content2", newContent);
+    }
+
+    contentElement.hidden = editArticleContentMode2;
+    inputElement.hidden = !editArticleContentMode2;
+
+    document.getElementById("ContentButton2").innerHTML = editArticleContentMode2 ? "Save" : "Edit";
 }
 
 function handleFooterNote() {
@@ -80,6 +153,24 @@ function handleLoad() {
         document.getElementById("companyCopyright").innerHTML = companyCopyright;
         document.getElementById("companyCopyrightInput").value = companyCopyright;
     }
+
+    const savedTitle = localStorage.getItem("Title");
+    if (savedTitle) {
+        document.getElementById("ArticleTitle").innerHTML = savedTitle;
+        document.getElementById("TitleInput").value = savedTitle;
+    }
+    const savedContent = localStorage.getItem("Content");
+    if (savedContent) {
+        document.getElementById("ArticleContent1").innerHTML = savedContent;
+        document.getElementById("ContentInput1").value = savedContent
+    }
+
+    const savedContent2 = localStorage.getItem("Content2");
+    if (savedContent2) { 
+        document.getElementById("ArticleContent2").textContent = savedContent2;
+        document.getElementById("ContentInput2").value = savedContent2;
+    }
+
     linksList.forEach(renderLink);
 }
    
