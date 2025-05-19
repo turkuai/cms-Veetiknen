@@ -1,3 +1,7 @@
+<?php
+// Include utility functions
+// require_once '../utils.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,18 +20,20 @@
         <input type="file" id="logoInput" hidden onchange="handleLogoImageUpload()">
         <button id="logoButton" onclick="handleLogoEdit()">Edit</button>
         <nav>
-            <a href="../index.html">View Site</a>
+            <a href="../index.php">View Site</a>
             <a href="#">Admin Panel</a>
         </nav>
     </header>
 
-    <h1 style="text-align: center; margin: 20px 0;">Blog Admin Panel</h1>
+    <div class="admin-panel">
+        <h1 style="text-align: center; margin: 20px 0;">Blog Admin Panel</h1>
 
-    <main id="adminArticles">
-        <!-- Articles will be rendered here by JavaScript -->
-    </main>
+        <main id="adminArticles">
+            <!-- Articles will be rendered here by JavaScript -->
+        </main>
 
-    <button class="add-article-button" onclick="addNewArticle()">+ Add New Article</button>
+        <button class="add-article-button" onclick="addNewArticle()">+ Add New Article</button>
+    </div>
 
     <footer>
         <div class="company-info">
@@ -39,11 +45,11 @@
             <p id="companyDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             <p id="companyCopyright">© 2024, Company's name. All rights reserved.</p>
     
-            <button onclick="handleFooterNote()">Edit</button>
+            <button onclick="handleFooterEdit()">Edit</button>
         </div>
     
         <div class="links">
-            <a href="../index.html">View Site</a>
+            <a href="../index.php">View Site</a>
             <a href="#">Admin Panel</a>
         </div>
         <div class="links2" id="link-list">
@@ -53,6 +59,6 @@
         </div>
     </footer>
     
-    <script src="index.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>
