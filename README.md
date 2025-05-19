@@ -7,3 +7,7 @@ https://turkuai.github.io/cms-Veetiknen/
 
 # Linkki nettisivulle Netlifystä
 https://cmsveeti.netlify.app/
+
+# Live-sivusto koulun palvelimella
+
+https://taikukkula.fi/tiev23p/veeti/cms/
